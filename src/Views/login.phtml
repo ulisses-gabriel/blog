@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <?php if (!empty(errors('credentials'))) { ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= errors('credentials') ?>
+                </div>
+            <?php } ?>
+
+            <div class="card">
+                <div class="card-header">Access your account</div>
+
+                <div class="card-body">
+                    <form method="POST" action="/login">
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">Your e-mail address</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control <?= !empty(errors('email')) ? 'is-invalid' : '' ?>"
+                                       name="email" required autocomplete="email" autofocus>
+                                <?php if (!empty(errors('email'))) { ?>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong><?= errors('email') ?></strong>
+                                    </span>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">Your password</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control <?= !empty(errors('password')) ? 'is-invalid' : '' ?>"
+                                       name="password" required autocomplete="current-password">
+                                <?php if (!empty(errors('password'))) { ?>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong><?= errors('password') ?></strong>
+                                    </span>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Login
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

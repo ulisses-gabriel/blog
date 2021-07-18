@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <?php if (!empty($this->view->posts)) { ?>
+
+                <?php foreach ($this->view->posts as $post) { ?>
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between">
+                            <a href="/posts/<?= $post->slug ?>" class="text-dark">
+                                <?= $post->title ?>
+                            </a>
+                            <span class="text-muted" style="font-size: 12px;">
+                            Posted at: <?= $post->created_at ?>
+                        </span>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                Author: <?= $post->author->name ?>
+                            </h6>
+                            <div class="card-text">
+                                <?= $post->getExcerpt() ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php } else { ?>
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">No posts found.</h5>
+                    </div>
+                </div>
+            <?php } ?>
+
+        </div>
+    </div>
+</div>

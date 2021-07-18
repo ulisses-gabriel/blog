@@ -70,7 +70,7 @@ $user = new User();
 
 $user->name = $userName;
 $user->email = $userEmail;
-$user->password = password_hash($userPassword, PASSWORD_BCRYPT);
+$user->password = hashPassword($userPassword);
 
 $user->save();
 

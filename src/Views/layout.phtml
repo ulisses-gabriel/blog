@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <title><?= $this->view->pageTitle ?? '' ?></title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+
+<div id="app">
+    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                My Blog
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left Side Of Navbar -->
+                <ul class="navbar-nav mr-auto">
+                    <?php if (isLogged()) { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/posts">All posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/posts/new">New post</a>
+                        </li>
+                    <?php } ?>
+                </ul>
+
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Authentication Links -->
+                    <?php if (!isLogged()) { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+
+                    <?php } else { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">
+                                Logout
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-4">
+        <?= $this->content($this->view->template ?? '') ?>
+    </main>
+</div>
+
+
+</body>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/summernote.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        const $content = $('#content');
+
+        if ($content) {
+            $content.summernote({
+                height: '250'
+            });
+        }
+
+        const $thumbnail = $('#thumbnail');
+
+        if ($thumbnail) {
+            $(document).on('change', '#thumbnail', event => {
+                const files = event.target.files;
+
+                if (FileReader && files && files.length) {
+                    const fileReader = new FileReader();
+
+                    fileReader.onload = () => {
+                        $thumbnail.parent().find('img').attr('src', fileReader.result);
+                    };
+
+                    fileReader.readAsDataURL(files[0]);
+                }
+            });
+        }
+    });
+</script>
+</html>

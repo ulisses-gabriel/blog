@@ -46,4 +46,11 @@ class App
 
         return $this;
     }
+
+    public function post(string $path, string $controller, string $action): App
+    {
+        $this->router->post($path ?: '/', $controller, $action);
+
+        return $this;
+    }
 }
