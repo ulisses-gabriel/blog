@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace App\Database\Adapters;
 
-class MySQLAdapter extends AbstractPDOAdapter
+class SQLiteAdapter extends AbstractPDOAdapter
 {
 }

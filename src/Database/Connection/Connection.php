@@ -6,6 +6,7 @@ namespace App\Database\Connection;
 
 use App\Database\Adapters\MySQLAdapter;
 use App\Database\Adapters\PDOAdapterInterface;
+use App\Database\Adapters\SQLiteAdapter;
 
 class Connection
 {
@@ -14,13 +15,15 @@ class Connection
 
     private static array $connections = [
         self::MYSQL_CONNECTION => MySQLConnection::class,
+        self::SQLITE_CONNECTION => SQLiteConnection::class,
     ];
 
     private static array $connectionAdapters = [
         self::MYSQL_CONNECTION => MySQLAdapter::class,
+        self::SQLITE_CONNECTION => SQLiteAdapter::class,
     ];
 
-    public static function getConnection(): \PDO
+    public static function getConnection(bool $connectToDB = true): \PDO
     {
         $driver = self::getAdapter();
         $connection = self::$connections[$driver] ?? null;
@@ -29,7 +32,7 @@ class Connection
             throw new \Exception(sprintf('No config defined for driver [%s]', $driver));
         }
 
-        return (new $connection())();
+        return (new $connection())($connectToDB);
     }
 
     public static function getAdapter(): string

@@ -152,7 +152,7 @@ abstract class Model
         }
 
         $criteria = [
-            ['id', $this->id]
+            ['id', $this->id],
         ];
 
         try {
@@ -164,5 +164,17 @@ abstract class Model
         }
 
         return true;
+    }
+
+    public function findOneBy(array $criteria): ?Model
+    {
+        $data = $this->pdoAdapter
+            ->setQueryBuilder(new Select($this->getTable(), $criteria))
+            ->execute()
+            ->first();
+
+        $this->setData($data);
+
+        return !empty($data) ? $this : null;
     }
 }

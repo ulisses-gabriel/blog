@@ -12,6 +12,16 @@ return [
                 'user' => 'homestead',
                 'password' => 'secret',
             ],
+            Connection::SQLITE_CONNECTION => [
+                'dbname' => 'blog',
+            ],
         ],
     ],
+    'migration' => [
+        'default_user' => [
+            'name' => 'User',
+            'email' => 'user@email.com',
+            'password' => 'password',
+        ]
+    ]
 ];
