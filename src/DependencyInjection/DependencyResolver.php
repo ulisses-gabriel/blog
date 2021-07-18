@@ -20,7 +20,9 @@ class DependencyResolver
         $constructor = $class->getConstructor();
 
         if (!$constructor) {
-            return new ($class->name)();
+            $className = $class->name;
+
+            return new $className();
         }
 
         return $class->newInstance($this->resolveParameters($constructor->getParameters()));

@@ -58,10 +58,10 @@ If you want a default user with different data, you can edit them in the same co
 Then run the migration:
 
 ```
-php migation.php
+php migration.php
 ```
 
-If everything wen ok, you should see something like this:
+If everything was ok, you should see something like this:
 
 ```
 $ php migration.php
