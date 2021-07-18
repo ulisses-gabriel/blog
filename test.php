@@ -11,6 +11,6 @@ function dd()
     die;
 }
 
-$user = new \App\Models\User();
+$user = (new \App\Models\User())->all();
 
 dd($user);

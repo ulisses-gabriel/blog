@@ -6,6 +6,7 @@ namespace App\Database;
 
 use App\Database\Adapters\PDOAdapterInterface;
 use App\Database\Connection\Connection;
+use App\Database\QueryBuilder\Select;
 
 abstract class Model
 {
@@ -83,5 +84,31 @@ abstract class Model
     protected function preSave(): void
     {
         //override on models if needed
+    }
+
+    public function first(int $id = null): ?Model
+    {
+        $criteria = [];
+
+        if ($id) {
+            $criteria[] = ['id' => $id];
+        }
+
+        $data = $this->pdoAdapter
+            ->setQueryBuilder(new Select($this->getTable(), $criteria))
+            ->execute()
+            ->first();
+
+        $this->setData($data);
+
+        return !empty($data) ? $this : null;
+    }
+
+    public function all(array $criteria = [], array $columns = ['*']): array
+    {
+        return $this->pdoAdapter
+            ->setQueryBuilder(new Select($this->getTable(), $criteria, $columns))
+            ->execute()
+            ->all();
     }
 }
