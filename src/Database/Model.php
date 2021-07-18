@@ -6,6 +6,7 @@ namespace App\Database;
 
 use App\Database\Adapters\PDOAdapterInterface;
 use App\Database\Connection\Connection;
+use App\Database\QueryBuilder\Insert;
 use App\Database\QueryBuilder\Select;
 
 abstract class Model
@@ -91,7 +92,7 @@ abstract class Model
         $criteria = [];
 
         if ($id) {
-            $criteria[] = ['id' => $id];
+            $criteria[] = ['id', $id];
         }
 
         $data = $this->pdoAdapter
@@ -110,5 +111,17 @@ abstract class Model
             ->setQueryBuilder(new Select($this->getTable(), $criteria, $columns))
             ->execute()
             ->all();
+    }
+
+    public function save(): Model
+    {
+        $this->created_at = date('Y-m-d H:i:s');
+        $this->updated_at = date('Y-m-d H:i:s');
+
+        $this->pdoAdapter
+            ->setQueryBuilder(new Insert($this->getTable(), $this->data))
+            ->execute();
+
+        return $this->first($this->pdoAdapter->lastInsertedId());
     }
 }
