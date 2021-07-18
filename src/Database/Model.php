@@ -8,6 +8,7 @@ use App\Database\Adapters\PDOAdapterInterface;
 use App\Database\Connection\Connection;
 use App\Database\QueryBuilder\Insert;
 use App\Database\QueryBuilder\Select;
+use App\Database\QueryBuilder\Update;
 
 abstract class Model
 {
@@ -115,7 +116,7 @@ abstract class Model
 
     public function save(): Model
     {
-        $this->created_at = date('Y-m-d H:i:s');
+        $this->created_at = date('Y-m-d H:i:s'); //Not all dbs support current timestamp
         $this->updated_at = date('Y-m-d H:i:s');
 
         $this->pdoAdapter
@@ -123,5 +124,23 @@ abstract class Model
             ->execute();
 
         return $this->first($this->pdoAdapter->lastInsertedId());
+    }
+
+    public function update(): Model
+    {
+        if (!$this->id) {
+            return $this->save();
+        }
+
+        $this->updated_at = date('Y-m-d H:i:s'); //Not all dbs support current timestamp on update
+        $criteria = [
+            ['id', $this->id],
+        ];
+
+        $this->pdoAdapter
+            ->setQueryBuilder(new Update($this->getTable(), $this->data, $criteria))
+            ->execute();
+
+        return $this;
     }
 }

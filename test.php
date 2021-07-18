@@ -11,12 +11,16 @@ function dd()
     die;
 }
 
-$user = new \App\Models\User();
+$user = (new \App\Models\User())->first();
 
-$user->name = 'test';
-$user->email = 'test@email.com';
-$user->password = '123';
+//$user->name = 'test';
+//$user->email = 'test@email.com';
+//$user->password = '123';
+//
+//$user = $user->save();
 
-$user = $user->save();
+$user->name = 'Test changed';
+
+$user->update();
 
 dd($user);
