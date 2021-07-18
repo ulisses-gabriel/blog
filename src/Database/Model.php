@@ -6,6 +6,7 @@ namespace App\Database;
 
 use App\Database\Adapters\PDOAdapterInterface;
 use App\Database\Connection\Connection;
+use App\Database\QueryBuilder\Delete;
 use App\Database\QueryBuilder\Insert;
 use App\Database\QueryBuilder\Select;
 use App\Database\QueryBuilder\Update;
@@ -142,5 +143,26 @@ abstract class Model
             ->execute();
 
         return $this;
+    }
+
+    public function delete(): bool
+    {
+        if (!$this->id) {
+            return false;
+        }
+
+        $criteria = [
+            ['id', $this->id]
+        ];
+
+        try {
+            $this->pdoAdapter
+                ->setQueryBuilder(new Delete($this->getTable(), $criteria))
+                ->execute();
+        } catch (\Throwable $exception) {
+            return false;
+        }
+
+        return true;
     }
 }

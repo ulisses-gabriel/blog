@@ -19,8 +19,8 @@ $user = (new \App\Models\User())->first();
 //
 //$user = $user->save();
 
-$user->name = 'Test changed';
+//$user->name = 'Test changed';
+//
+//$user->update();
 
-$user->update();
-
-dd($user);
+dd($user->delete());
