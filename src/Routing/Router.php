@@ -20,16 +20,16 @@ class Router
         $this->method = $method;
     }
 
-    public function get(string $path, string $controller, string $action): Router
+    public function get(string $path, string $controller, string $action, bool $authenticated = false): Router
     {
-        $this->routeCollection->add(self::METHOD_GET, $path, $controller, $action);
+        $this->routeCollection->add(self::METHOD_GET, $path, $controller, $action, $authenticated);
 
         return $this;
     }
 
-    public function post(string $path, string $contrller, string $action): Router
+    public function post(string $path, string $contrller, string $action, bool $authenticated = false): Router
     {
-        $this->routeCollection->add(self::METHOD_POST, $path, $contrller, $action);
+        $this->routeCollection->add(self::METHOD_POST, $path, $contrller, $action, $authenticated);
 
         return $this;
     }
@@ -49,6 +49,10 @@ class Router
 
                 break;
             }
+        }
+
+        if ($callback && $callback->requiresAuthenticated() && !isLogged()) {
+            header('Location: /login');
         }
 
         return [

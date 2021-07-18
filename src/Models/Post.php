@@ -10,7 +10,7 @@ class Post extends Model
 {
     public function loadAuthor(): void
     {
-        $this->author = (new User())->first($this->author_id);
+        $this->author = (new User())->first((int)$this->author_id);
     }
 
     public function getExcerpt(): string

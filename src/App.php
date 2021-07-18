@@ -45,16 +45,16 @@ class App
         $controllerClass->$action($route['params']);
     }
 
-    public function get(string $path, string $controller, string $action): App
+    public function get(string $path, string $controller, string $action, bool $authenticated = false): App
     {
-        $this->router->get($path ?: '/', $controller, $action);
+        $this->router->get($path ?: '/', $controller, $action, $authenticated);
 
         return $this;
     }
 
-    public function post(string $path, string $controller, string $action): App
+    public function post(string $path, string $controller, string $action, bool $authenticated = false): App
     {
-        $this->router->post($path ?: '/', $controller, $action);
+        $this->router->post($path ?: '/', $controller, $action, $authenticated);
 
         return $this;
     }

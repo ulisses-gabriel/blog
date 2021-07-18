@@ -8,11 +8,11 @@ class RouteCollection
 {
     private array $routes = [];
 
-    public function add(string $method, string $path, string $controller, string $action): RouteCollection
+    public function add(string $method, string $path, string $controller, string $action, bool $authenticated = false): RouteCollection
     {
         $this->checkMethod($method);
 
-        $this->routes[$method][$path] = new Route($path, $controller, $action);
+        $this->routes[$method][$path] = new Route($path, $controller, $action, $authenticated);
 
         return $this;
     }
