@@ -43,9 +43,10 @@ class Router
         foreach ($methodRoutes as $path => $methodRoute) {
             /** @var Route $methodRoute */
             $result = $this->checkUrl($path, $this->path);
-            $callback = $methodRoute;
 
             if ($result['result']) {
+                $callback = $methodRoute;
+
                 break;
             }
         }

@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="/css/summernote.min.css">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <?php if (!empty($_SESSION['message'])) { ?>
+                <div class="alert alert-success" role="alert">
+                    <?= $_SESSION['message'] ?>
+                </div>
+            <?php } ?>
+            <div class="card">
+                <div class="card-header">
+                    Add new post
+                </div>
+                <form action="/admin/posts/new" method="POST" enctype="multipart/form-data">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" name="title" id="title" class="form-control <?= !empty(errors('title')) ? 'is-invalid' : '' ?>">
+                            <?php if (!empty(errors('title'))) { ?>
+                                <span class="invalid-feedback" role="alert">
+                                        <strong><?= errors('title') ?></strong>
+                                    </span>
+                            <?php } ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            <textarea type="text" name="content" id="content" class="form-control <?= !empty(errors('content')) ? 'is-invalid' : '' ?>"
+                                      rows="10"></textarea>
+                            <?php if (!empty(errors('content'))) { ?>
+                                <span class="invalid-feedback" role="alert">
+                                        <strong><?= errors('content') ?></strong>
+                                    </span>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

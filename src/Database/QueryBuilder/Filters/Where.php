@@ -22,7 +22,7 @@ trait Where
 
             if (!empty($condition[2])) {
                 $operator = $value;
-                $values = $condition[2];
+                $value = $condition[2];
             }
 
             $where[] = sprintf('%s %s ?', $field, $operator); // field = ?

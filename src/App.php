@@ -31,6 +31,11 @@ class App
     public function run(): void
     {
         $route = $this->router->run();
+
+        if (!$route['callback']) {
+            throw new \Exception('Route not found');
+        }
+
         $resolver = new DependencyResolver();
         /** @var Route $callback */
         $callback = $route['callback'];

@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2><?= $this->view->post->title ?></h2>
+                    <span style="font-size: 12px;" class="text-muted">Posted At: <?= $this->view->post->created_at ?></span>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">
+                        Author: <?= $this->view->post->author->name ?>
+                    </h6>
+                    <div class="card-text">
+                        <?= $this->view->post->content ?>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="/" class="btn btn-info">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

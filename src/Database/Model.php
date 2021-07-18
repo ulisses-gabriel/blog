@@ -8,6 +8,7 @@ use App\Database\Adapters\PDOAdapterInterface;
 use App\Database\Connection\Connection;
 use App\Database\QueryBuilder\Delete;
 use App\Database\QueryBuilder\Insert;
+use App\Database\QueryBuilder\Paginate;
 use App\Database\QueryBuilder\Select;
 use App\Database\QueryBuilder\Update;
 
@@ -109,14 +110,22 @@ abstract class Model
 
     public function all(array $criteria = [], array $columns = ['*']): array
     {
-        return $this->pdoAdapter
+        $data = $this->pdoAdapter
             ->setQueryBuilder(new Select($this->getTable(), $criteria, $columns))
             ->execute()
             ->all();
+
+        return $this->parseModels($data);
     }
 
     public function save(): Model
     {
+        if ($this->id) {
+            return $this->update();
+        }
+
+        $this->preSave();
+
         $this->created_at = date('Y-m-d H:i:s'); //Not all dbs support current timestamp
         $this->updated_at = date('Y-m-d H:i:s');
 
@@ -132,6 +141,8 @@ abstract class Model
         if (!$this->id) {
             return $this->save();
         }
+
+        $this->preSave();
 
         $this->updated_at = date('Y-m-d H:i:s'); //Not all dbs support current timestamp on update
         $criteria = [
@@ -176,5 +187,36 @@ abstract class Model
         $this->setData($data);
 
         return !empty($data) ? $this : null;
+    }
+
+    public function paginate(array $criteria = [], int $perPage = 3): Paginator
+    {
+        $page = (int)($_GET['page'] ?? 1);
+        $data = $this->pdoAdapter
+            ->setQueryBuilder(new Paginate($this->getTable(), $criteria, $page, $perPage))
+            ->execute()
+            ->all();
+        $countForPagination = $this->pdoAdapter
+            ->setQueryBuilder(new Select($this->getTable(), $criteria, ['count(*) as count']))
+            ->execute()
+            ->first();
+        $itemsCount = (int)$countForPagination['count'] ?: 0;
+
+        return (new Paginator($this->parseModels($data)))
+            ->setCurrentPage($page)
+            ->setPerPage($perPage)
+            ->setPages((int)ceil($itemsCount / $perPage));
+    }
+
+    private function parseModels(array $modelsData): array
+    {
+        $models = [];
+
+        foreach ($modelsData as $modelData) {
+            $models[] = (new static())->setData($modelData)
+                ->setPdoAdapter($this->pdoAdapter);
+        }
+
+        return $models;
     }
 }

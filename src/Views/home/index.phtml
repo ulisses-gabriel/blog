@@ -1,9 +1,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <?php if (!empty($this->view->posts)) { ?>
+            <?php if (!empty($this->view->posts->getItems())) { ?>
 
-                <?php foreach ($this->view->posts as $post) { ?>
+                <?php foreach ($this->view->posts->getItems() as $post) { ?>
                     <div class="card mb-4">
                         <div class="card-header d-flex justify-content-between">
                             <a href="/posts/<?= $post->slug ?>" class="text-dark">
@@ -31,6 +31,18 @@
                 </div>
             <?php } ?>
 
+            <?php if ($this->view->posts->hasPages()) { ?>
+                <nav aria-label="...">
+                    <ul class="pagination d-flex justify-content-between">
+                        <li class="page-item <?= $this->view->posts->getCurrentPage() === 1 ? 'disabled' : '' ?>">
+                            <a class="page-link" href="?page=<?= $this->view->posts->previousPage() ?>" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item <?= $this->view->posts->hasMorePages() ? '' : 'disabled' ?>">
+                            <a class="page-link" href="?page=<?= $this->view->posts->nextPage() ?>">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            <?php } ?>
         </div>
     </div>
 </div>

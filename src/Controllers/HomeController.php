@@ -13,12 +13,12 @@ class HomeController extends Controller
     {
         $this->view->pageTitle = 'Blog';
         $user = new User();
-        $posts = (new Post())->all();
+        $posts = (new Post())->paginate();
         $authors = [];
 
-        foreach ($posts as $post) {
+        foreach ($posts->getItems() as $post) {
             if (empty($authors[$post->author_id])) {
-                $authors[$post->author_id] = $user->first($post->author_id);
+                $authors[$post->author_id] = $user->first((int)$post->author_id);
             }
 
             $post->author = $authors[$post->author_id];

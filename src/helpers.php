@@ -88,6 +88,11 @@ function clearErrors(): void
     unset($_SESSION['errors']);
 }
 
+function clearMessage(): void
+{
+    unset($_SESSION['message']);
+}
+
 function slugify(string $text, string $divider = '-'): string
 {
     // replace non letter or digits by divider
