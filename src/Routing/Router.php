@@ -10,6 +10,9 @@ class Router
     private string $path;
     private string $method;
 
+    const METHOD_GET = 'GET';
+    const METHOD_POST = 'POST';
+
     public function __construct(string $path, string $method)
     {
         $this->routeCollection = new RouteCollection();
@@ -19,14 +22,14 @@ class Router
 
     public function get(string $path, string $controller, string $action): Router
     {
-        $this->routeCollection->add('GET', $path, $controller, $action);
+        $this->routeCollection->add(self::METHOD_GET, $path, $controller, $action);
 
         return $this;
     }
 
     public function post(string $path, string $contrller, string $action): Router
     {
-        $this->routeCollection->add('POST', $path, $contrller, $action);
+        $this->routeCollection->add(self::METHOD_POST, $path, $contrller, $action);
 
         return $this;
     }
@@ -69,5 +72,15 @@ class Router
         $result = preg_match('/^' . $regex . '$/', $subject, $params);
 
         return compact('result', 'params');
+    }
+
+    public function isGet(): bool
+    {
+        return strtoupper($this->method) === self::METHOD_GET;
+    }
+
+    public function isPost(): bool
+    {
+        return strtoupper($this->method) === self::METHOD_POST;
     }
 }

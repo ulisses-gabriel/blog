@@ -17,7 +17,7 @@ class App
     {
         $this->runningInConsole = $runningInConsole;
         $path = $_SERVER['PATH_INFO'] ?? '/';
-        $requestedMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $requestedMethod = $_SERVER['REQUEST_METHOD'] ?? Router::METHOD_GET;
         $this->router = new Router($path, $requestedMethod);
 
         session_start();
